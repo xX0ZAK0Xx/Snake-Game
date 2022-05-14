@@ -11,6 +11,7 @@ int x, y, fruitX, fruitY,score;
 char head = '^';
 int *tailX, *tailY;
 int length;
+int speed=0;
 
 enum direction {
     STOP = 0,
@@ -23,11 +24,35 @@ direction dir,prevDir;
 
 void instruction(){
     system("cls");
+    cout <<"See the instructions\n";
+    cout <<"________________________\n";
     cout << "Press w to move up\n";
     cout << "Press a to move left\n";
     cout << "Press d to move right\n";
     cout << "Press s to move down\n";
-    cout << "Just eat the \"X\"\n";
+    cout << "Just eat the \"X\"\n\n";
+    cout <<"Chose snake speed\n";
+    cout <<"1. Easy\n";
+    cout <<"2. Medium\n";
+    cout <<"3. Hard\n";
+    if(!(_kbhit())){
+        switch(_getch()){
+            case '1':
+                cout << "Easy\n";
+                speed = 10;
+                break;
+            case '2':
+                cout << "Medium\n";
+                speed = 5;
+                break;
+            case '3':
+                cout << "Hard\n";
+                speed = 0;
+                break;
+            default:
+                break;
+        }
+    }
     cout << "Press ENTER to start\n";
     cin.ignore();
     system("cls");
@@ -196,11 +221,13 @@ void logic(){
 
 int main(){
     srand(time(0));
-    setup();
+    setup();   
+
     while(!gameOver){
         draw();
         input();
         logic();
+        Sleep(speed);
         if(gameOver){
             cout <<"Oops! You ate yourself!" << endl;
             cout <<"Press 'a' if you want to play again or\n";
