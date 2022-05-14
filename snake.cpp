@@ -39,15 +39,15 @@ void instruction(){
         switch(_getch()){
             case '1':
                 cout << "Easy\n";
-                speed = 10;
+                speed = 100;
                 break;
             case '2':
                 cout << "Medium\n";
-                speed = 5;
+                speed = 50;
                 break;
             case '3':
                 cout << "Hard\n";
-                speed = 0;
+                speed = 20;
                 break;
             default:
                 break;
@@ -100,7 +100,7 @@ void input(){
     }
 }
 void draw(){
-    system("cls");
+    // system("cls");
 
     cout <<"Score: "<<score<<endl;
     for(int i = 0; i <width+1 ; i++){
@@ -128,6 +128,9 @@ void draw(){
             }
         }
         cout << "\n";
+
+        
+
     }
     for(int i = 0; i <width+1 ; i++){
         cout <<"#";
@@ -225,6 +228,7 @@ int main(){
 
     while(!gameOver){
         draw();
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),{0,0});
         input();
         logic();
         Sleep(speed);
