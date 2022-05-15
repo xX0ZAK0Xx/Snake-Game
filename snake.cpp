@@ -233,6 +233,7 @@ int main(){
         logic();
         Sleep(speed);
         if(gameOver){
+            cout <<"Score: "<<score<<endl;
             cout <<"Oops! You ate yourself!" << endl;
             cout <<"Press 'a' if you want to play again or\n";
             cout <<"Press any other key to exit." << endl;
