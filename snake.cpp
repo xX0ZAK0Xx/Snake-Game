@@ -3,15 +3,20 @@
 #include<time.h>
 #include<windows.h>
 
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+
 using  namespace std;
 bool gameOver;
-const int width = 20;
-const int height = 20;
+int width = 40;//default medium screen
+int height = 20;//default medium screen
 int x, y, fruitX, fruitY,score;
-char head = '^';
-int *tailX, *tailY;
+char head = '^';//default head direction
+int *tailX, *tailY;//to store the tail position dynamically
 int length;
-int speed=0;
+int speed=0;//default snake speed
 
 enum direction {
     STOP = 0,
@@ -53,6 +58,28 @@ void instruction(){
                 break;
         }
     }
+    cout <<"\nChose Board size\n";
+    cout <<"1. Small\n";
+    cout <<"2. Medium\n";
+    cout <<"3. Large\n";
+    if(!(_kbhit())){
+        switch(_getch()){
+            case '1':
+                cout << "Small\n";
+                width = 20; height =10;
+                break;
+            case '2':
+                cout << "Medium\n";
+                width = 30; height = 15;
+                break;
+            case '3':
+                cout << "Large\n";
+                width = 40; height = 20;
+                break;
+            default:
+                break;
+        }
+    }
     cout << "Press ENTER to start\n";
     cin.ignore();
     system("cls");
@@ -60,8 +87,8 @@ void instruction(){
 
 void setup(){
     instruction();
-    tailX = new int [200];
-    tailY = new int [200];
+    tailX = new int [800];
+    tailY = new int [800];
     length = 0;
     gameOver = false;
     dir = STOP;
@@ -89,6 +116,18 @@ void input(){
                 dir = RIGHT;
                 break;
             case 'w':
+                dir = UP;
+                break;
+            case KEY_LEFT:
+                dir = LEFT;
+                break;
+            case KEY_DOWN:
+                dir = DOWN;
+                break;
+            case KEY_RIGHT:
+                dir = RIGHT;
+                break;
+            case KEY_UP:
                 dir = UP;
                 break;
             case 'x':
@@ -141,17 +180,17 @@ void draw(){
 }
 void logic(){
 
-    int prevX = tailX[0];
-    int prevY = tailY[0];
-    int prev2X, prev2Y;
-    tailX[0] = x;
-    tailY[0] = y;
+    int prevX = tailX[0];//previous head position X
+    int prevY = tailY[0];//previous head position Y
+    int prev2X, prev2Y;//to swap 
+    tailX[0] = x;//new head position X
+    tailY[0] = y;//new head position Y
     for( int i=1 ; i<length; i++ ){
-        prev2X = tailX[i];
-        prev2Y = tailY[i];
-        tailX[i] = prevX;
-        tailY[i] = prevY;
-        prevX = prev2X;
+        prev2X = tailX[i];//storing the starting position of the body X
+        prev2Y = tailY[i];//storing the starting position of the body Y
+        tailX[i] = prevX;// Moving body to the previous head position X
+        tailY[i] = prevY;// Moving body to the previous head position Y 
+        prevX = prev2X;//
         prevY = prev2Y;
     }
 
@@ -218,6 +257,10 @@ void logic(){
     if(x==fruitX && y==fruitY){
         score+=10;
         setFruit();
+        for(int i= 0 ; i<length ; i++){
+            if( fruitX==tailX[i] && fruitY==tailY[i] )
+                setFruit();
+        }
         length++;
     }
 }
